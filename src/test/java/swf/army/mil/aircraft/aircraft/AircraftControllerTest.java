@@ -31,15 +31,12 @@ public class AircraftControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final Aircraft b17 = new Aircraft(2, "B17", "Bob");
-    private ArrayList<Aircraft> aircraftList = new ArrayList<>();
-
-
     @Test
     void shouldCreateAnAircraft() throws Exception {
-        Mockito.when(aircraftService.saveAircraft(any(Aircraft.class))).thenReturn(b17);
 
+        final Aircraft b17 = new Aircraft(2, "B17", "Bob");
         String b17JSON = objectMapper.writeValueAsString(b17);
+        Mockito.when(aircraftService.saveAircraft(any(Aircraft.class))).thenReturn(b17);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/aircraft")
@@ -54,6 +51,7 @@ public class AircraftControllerTest {
 
     @Test
     void shouldGetAllAircraft() throws Exception {
+        ArrayList<Aircraft> aircraftList = new ArrayList<>();
         aircraftList.add(new Aircraft(1, "Biplane", "Alice"));
         aircraftList.add(new Aircraft(2, "Triplane", "Bob"));
 
@@ -68,9 +66,8 @@ public class AircraftControllerTest {
 
     @Test
     void shouldGetAircraftByID() throws Exception {
-        aircraftList.add(new Aircraft(17, "Deathstar", "Darth"));
-
-        Mockito.when(aircraftService.getAircraftByID(17L)).thenReturn(aircraftList.getFirst());
+        final Aircraft b17 = new Aircraft(17L, "Deathstar", "Darth");
+        Mockito.when(aircraftService.getAircraftByID(17L)).thenReturn(b17);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/aircraft/17"))
