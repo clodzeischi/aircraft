@@ -2,7 +2,6 @@ package swf.army.mil.aircraft.pilot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -78,10 +77,17 @@ public class PilotControllerTest {
     @Test
     void shouldGetPilotByID() throws Exception {
 
+        // Arrange: create mock pilot, intercept command from controller to service
+        Pilot testPilot = new Pilot(7L, "Bob", "Ross", 39);
+        when(pilotService.getPilotByID(7L)).thenReturn(testPilot);
+
+        // Act
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/pilot/7"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(7));
+
+        // Assert
+        verify(pilotService).getPilotByID(7L);
     }
-
-
-
-
-
 }

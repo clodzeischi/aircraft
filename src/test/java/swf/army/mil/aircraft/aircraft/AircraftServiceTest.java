@@ -24,11 +24,12 @@ class AircraftServiceTest {
     @InjectMocks
     AircraftService aircraftService;
 
-    Aircraft testAircraft = new Aircraft(12, "Normandy", "Jocker");
 
     @Test
     void shouldSaveAircraft() {
+
         // Arrange: fork command from service to repository, and return a fake plane.
+        Aircraft testAircraft = new Aircraft(12, "Normandy", null);
         when(aircraftRepository.save(testAircraft)).thenReturn((testAircraft));
 
         // Act: send the command from service to repo to save an aircraft.
@@ -42,7 +43,9 @@ class AircraftServiceTest {
 
     @Test
     void shouldGetAircraftByID() {
+
         // Arrange: intercept call from service to repo
+        Aircraft testAircraft = new Aircraft(12L, "Normandy", null);
         when(aircraftRepository.findById(12L)).thenReturn(Optional.of(testAircraft));
 
         // Act: send command to retrieve AC by ID
@@ -59,8 +62,7 @@ class AircraftServiceTest {
 
         // Arrange: intercept call from service to repo
         List<Aircraft> allAircraft = new ArrayList<Aircraft>();
-        allAircraft.add(testAircraft);
-
+        allAircraft.add(new Aircraft(8, "Death Star", null));
         when(aircraftRepository.findAll()).thenReturn(allAircraft);
 
         // Act: send command to Service

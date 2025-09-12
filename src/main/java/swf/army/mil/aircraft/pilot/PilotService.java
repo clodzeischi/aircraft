@@ -6,15 +6,22 @@ import java.util.List;
 
 @Service
 public class PilotService {
-    public Pilot savePilot(Pilot p) {
-    return null;
+
+    private PilotRepository pilotRepository;
+
+    public PilotService(PilotRepository r) {
+        this.pilotRepository = r;
     }
 
-    public List<Pilot> getAllPilots() {
-        return null;
+    public Pilot savePilot(Pilot p) {
+        return pilotRepository.save(p);
     }
 
     public Pilot getPilotByID(Long id) {
-        return null;
+        return pilotRepository.findById(id).get();
+    }
+
+    public List<Pilot> getAllPilots() {
+        return pilotRepository.findAll();
     }
 }
